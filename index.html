@@ -188,47 +188,48 @@
         <button type="button" onclick="enqueueStudent()">Get Queuing Number</button>
    
 
-    <p id="result"></p>
+    <p id="result" name= "Your Queuing Number:"></p>
  </form>
     <div id="queue-container">
         <ul id="queue-list"></ul>
     </div>
 
     <script>
-        function enqueueStudent() {
-            const name = document.getElementById('name').value;
-            const gradeSection = document.getElementById('gradeSection').value;
-            const strand = document.getElementById('strand').value;
+       function enqueueStudent() {
+    const name = document.getElementById('name').value;
+    const gradeSection = document.getElementById('gradeSection').value;
+    const strand = document.getElementById('strand').value;
 
-            const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
-            const existingStudent = queuingList.find(student => student.name === name && student.gradeSection === gradeSection && student.strand === strand);
+    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+
+    // Check if the person already has a queuing number
+    const existingStudent = queuingList.find(student => student.name === name && student.gradeSection === gradeSection && student.strand === strand);
 
     if (existingStudent) {
         alert(`You already have Queuing Number: ${existingStudent.queuingNumber}. Please wait for your turn.`);
         return;
     }
 
-            const student = {
-                name,
-                gradeSection,
-                strand
-            };
+    const student = {
+        name,
+        gradeSection,
+        strand
+    };
 
-            const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
-            const queuingNumber = queuingList.length + 1;
-            student.queuingNumber = queuingNumber;
-            queuingList.push(student);
-            localStorage.setItem('queuingList', JSON.stringify(queuingList));
+    const queuingNumber = queuingList.length + 1;
+    student.queuingNumber = queuingNumber;
+    queuingList.push(student);
+    localStorage.setItem('queuingList', JSON.stringify(queuingList));
 
-            displayQueuedStudent(student);
-        }
+    displayQueuedStudent(student);
+}
 
-        function displayQueuedStudent(student) {
-            const resultElement = document.getElementById('result');
-            const queueList = document.getElementById('queue-list');
+function displayQueuedStudent(student) {
+    const resultElement = document.getElementById('result');
+    const queueList = document.getElementById('queue-list');
 
-            resultElement.innerHTML = `Your Queuing Number: ${student.queuingNumber}`;
-        }
+    resultElement.innerHTML = `Your Queuing Number: ${student.queuingNumber}`;
+}
     </script>
 
 </body>
