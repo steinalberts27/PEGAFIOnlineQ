@@ -53,33 +53,30 @@
         <ul id="queue-list"></ul>
     </div>
 
-    <button onclick="dequeueStudent()">Next Student</button>
-
-    <script src="script.js"></script>
     <script>
+        // Function to initialize the owner page
+        function initOwnerPage() {
+            displayQueuingList();
+        }
+
+        // Function to display the queuing list
+        function displayQueuingList() {
+            const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+            const queueListElement = document.getElementById('queue-list');
+
+            // Clear existing content
+            queueListElement.innerHTML = '';
+
+            // Display each student in the list
+            queuingList.forEach(student => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Queuing Number: ${student.queuingNumber}, Name: ${student.name}, Grade/Section: ${student.gradeSection}, Strand: ${student.strand}`;
+                queueListElement.appendChild(listItem);
+            });
+        }
+
+        // Initial call to the function to display queuing list on page load
         initOwnerPage();
-
-        function dequeueStudent() {
-    
-    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
-
-    if (queuingList.length === 0) {
-        alert('No students in the queue.');
-        return;
-    }
-
-    
-    const dequeuedStudent = queuingList.shift();
-
-    
-    localStorage.setItem('queuingList', JSON.stringify(queuingList));
-
-    
-    displayQueuingList();
-
-   
-    alert(`Dequeued: Queuing Number ${dequeuedStudent.queuingNumber}, Name: ${dequeuedStudent.name}`);
-}
     </script>
 
 </body>
