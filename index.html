@@ -200,13 +200,20 @@
             const gradeSection = document.getElementById('gradeSection').value;
             const strand = document.getElementById('strand').value;
 
+            const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+            const existingStudent = queuingList.find(student => student.name === name && student.gradeSection === gradeSection && student.strand === strand);
+
+    if (existingStudent) {
+        alert(`You already have Queuing Number: ${existingStudent.queuingNumber}. Please wait for your turn.`);
+        return;
+    }
+
             const student = {
                 name,
                 gradeSection,
                 strand
             };
 
-            // Store student information in localStorage (simulate server-side storage)
             const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
             const queuingNumber = queuingList.length + 1;
             student.queuingNumber = queuingNumber;
