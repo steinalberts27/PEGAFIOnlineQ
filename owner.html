@@ -61,7 +61,7 @@
         initOwnerPage();
 
         function dequeueStudent() {
-            const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+            const queuingList = JSON.parse(script.js.getItem('queuingList')) || [];
 
             if (queuingList.length === 0) {
                 alert('No students in the queue.');
