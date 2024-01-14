@@ -1,35 +1,32 @@
-function enqueueStudent() {
-    const name = document.getElementById('name').value;
-    const gradeSection = document.getElementById('gradeSection').value;
-    const strand = document.getElementById('strand').value;
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-project-id.firebaseapp.com",
+  databaseURL: "https://your-project-id.firebaseio.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project-id.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
-    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-    // Check if the person already has a queuing number
-    const existingStudent = queuingList.find(student => student.name === name && student.gradeSection === gradeSection && student.strand === strand);
+// Get a reference to the Firebase database
+const database = firebase.database();
 
-    if (existingStudent) {
-        alert(`You already have Queuing Number: ${existingStudent.queuingNumber}. Please wait for your turn.`);
-        return;
-    }
+// Example of storing data in Firebase
+const dataToStore = {
+  key1: 'value1',
+  key2: 'value2'
+};
 
-    const student = {
-        name,
-        gradeSection,
-        strand
-    };
+// Push data to Firebase (creates a new unique key)
+database.ref('data').push(dataToStore);
 
-    const queuingNumber = queuingList.length + 1;
-    student.queuingNumber = queuingNumber;
-    queuingList.push(student);
-    localStorage.setItem('queuingList', JSON.stringify(queuingList));
+// Read data from Firebase
+database.ref('data').once('value').then(snapshot => {
+  const retrievedData = snapshot.val();
+  console.log('Data retrieved from Firebase:', retrievedData);
+});
 
-    displayQueuedStudent(student);
-}
-
-function displayQueuedStudent(student) {
-    const resultElement = document.getElementById('result');
-    const queueList = document.getElementById('queue-list');
-
-    resultElement.innerHTML = `Your Queuing Number: ${student.queuingNumber}`;
-}
