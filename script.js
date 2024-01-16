@@ -1,5 +1,7 @@
 // Shared JavaScript file for common functionalities
 
+<script src="script.js"></script>
+
 function initMainPage() {
     // Initialization for the main page
     displayQueuingList();
