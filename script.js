@@ -1,6 +1,6 @@
 // Shared JavaScript file for common functionalities
 
-<script src="script.js"></script>
+<script src="script.js">
 
 function initMainPage() {
     // Initialization for the main page
@@ -79,3 +79,4 @@ function displayQueuingListForMonitor() {
         monitorQueueElement.appendChild(displayItem);
     });
 }
+</script>
