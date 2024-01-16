@@ -1,32 +1,79 @@
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project-id.firebaseapp.com",
-  databaseURL: "https://your-project-id.firebaseio.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+// Shared JavaScript file for common functionalities
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+function initMainPage() {
+    // Initialization for the main page
+    displayQueuingList();
+}
 
-// Get a reference to the Firebase database
-const database = firebase.database();
+function initOwnerPage() {
+    // Initialization for the owner page
+    displayQueuingList();
+}
 
-// Example of storing data in Firebase
-const dataToStore = {
-  key1: 'value1',
-  key2: 'value2'
-};
+function initMonitorPage() {
+    // Initialization for the monitor display page
+    displayQueuingListForMonitor();
+}
 
-// Push data to Firebase (creates a new unique key)
-database.ref('data').push(dataToStore);
+function enqueueStudent() {
+    const name = document.getElementById('name').value;
+    const gradeSection = document.getElementById('gradeSection').value;
+    const strand = document.getElementById('strand').value;
 
-// Read data from Firebase
-database.ref('data').once('value').then(snapshot => {
-  const retrievedData = snapshot.val();
-  console.log('Data retrieved from Firebase:', retrievedData);
-});
+    const student = {
+        name,
+        gradeSection,
+        strand
+    };
 
+    // Retrieve the queuing list from localStorage
+    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+    const queuingNumber = queuingList.length + 1;
+    student.queuingNumber = queuingNumber;
+    queuingList.push(student);
+
+    // Store the updated queuing list in localStorage
+    localStorage.setItem('queuingList', JSON.stringify(queuingList));
+
+    displayQueuedStudent(student);
+    displayQueuingList();
+}
+
+function displayQueuedStudent(student) {
+    const resultElement = document.getElementById('result');
+    const queueList = document.getElementById('queue-list');
+
+    resultElement.innerHTML = `Your Queuing Number: ${student.queuingNumber}`;
+
+    const listItem = document.createElement('li');
+    listItem.textContent = `Queuing Number: ${student.queuingNumber}, Name: ${student.name}, Grade/Section: ${student.gradeSection}, Strand: ${student.strand}`;
+    queueList.appendChild(listItem);
+}
+
+function displayQueuingList() {
+    const queueListElement = document.getElementById('queue-list');
+    queueListElement.innerHTML = ''; // Clear the existing list
+
+    // Retrieve the queuing list from localStorage
+    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+
+    queuingList.forEach(student => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Queuing Number: ${student.queuingNumber}, Name: ${student.name}, Grade/Section: ${student.gradeSection}, Strand: ${student.strand}`;
+        queueListElement.appendChild(listItem);
+    });
+}
+
+function displayQueuingListForMonitor() {
+    const monitorQueueElement = document.getElementById('monitor-queue');
+    monitorQueueElement.innerHTML = ''; // Clear the existing display
+
+    // Retrieve the queuing list from localStorage
+    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+
+    queuingList.forEach(student => {
+        const displayItem = document.createElement('div');
+        displayItem.textContent = `Queuing Number: ${student.queuingNumber}, Name: ${student.name}, Grade/Section: ${student.gradeSection}, Strand: ${student.strand}`;
+        monitorQueueElement.appendChild(displayItem);
+    });
+}
