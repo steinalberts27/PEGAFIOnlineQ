@@ -1,0 +1,25 @@
+ <script>
+        initOwnerPage();
+
+        function dequeueStudent() {
+    
+    const queuingList = JSON.parse(localStorage.getItem('queuingList')) || [];
+
+    if (queuingList.length === 0) {
+        alert('No students in the queue.');
+        return;
+    }
+
+    
+    const dequeuedStudent = queuingList.shift();
+
+    
+    localStorage.setItem('queuingList', JSON.stringify(queuingList));
+
+    
+    displayQueuingList();
+
+   
+    alert(`Dequeued: Queuing Number ${dequeuedStudent.queuingNumber}, Name: ${dequeuedStudent.name}`);
+}
+    </script>
